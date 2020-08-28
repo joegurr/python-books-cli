@@ -1,0 +1,14 @@
+# python
+
+__pycache__/
+*.py[cod]
+
+# vim
+
+*~
+*.swp
+*.swo
+
+# other
+
+draft-commits.txt
