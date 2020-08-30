@@ -74,4 +74,6 @@ def menu():
 
     print('Thanks, bye')
 
+database.get_books()
 menu()
+
