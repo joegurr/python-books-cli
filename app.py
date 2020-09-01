@@ -20,11 +20,12 @@ def get_book_info():
     author = input('Who is the author: ')
     read = input('Have you read this book (y/n): ')
     # could check for valid input here?
-    if read != 'y' or read != 'Y':
-        read = 0
-    else:
+    if read == 'y':
         read = 1
+    else:
+        read = 0
 
+    print(read)
     return { 'name': name, 'author': author, 'read': read }
 
 
