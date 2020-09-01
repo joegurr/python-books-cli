@@ -21,9 +21,9 @@ def get_book_info():
     read = input('Have you read this book (y/n): ')
     # could check for valid input here?
     if read != 'y' or read != 'Y':
-        read = False
+        read = 0
     else:
-        read = True
+        read = 1
 
     return { 'name': name, 'author': author, 'read': read }
 
@@ -63,6 +63,7 @@ USER_OPTIONS = {
 }
 
 def menu():
+    database.create_book_table()
     user_input = input(USER_CHOICE)
     while user_input != 'q':
         if user_input in USER_OPTIONS:
@@ -74,6 +75,5 @@ def menu():
 
     print('Thanks, bye')
 
-database.get_books()
 menu()
 

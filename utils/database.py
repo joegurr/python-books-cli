@@ -1,56 +1,58 @@
-import json
+import sqlite3
 
-FILENAME = '/Users/josephgurr/Development/python-books-cli/utils/books.json'
 
-books = []
+def create_book_table():
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
 
-def clear():
-    global books
-    books = []
-    with open(FILENAME, 'w') as file:
-        json.dump({}, file)
+    cursor.execute('CREATE TABLE IF NOT EXISTS books(name text primary key, author text, read integer)')
 
+    connection.commit()
+    connection.close()
 
 def add_book(book):
-    global books
-    books.append(book)
-    with open(FILENAME, 'w') as file:
-        json.dump({'books': books}, file)
-    get_books()
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+
+    name = book['name']
+    author = book['author']
+    read = book['read']
+
+    cursor.execute('INSERT INTO books VALUES(?, ?, ?)', (name, author, read))
+
+    connection.commit()
+    connection.close()
+
 
 def get_books():
-    global books
-    with open(FILENAME, 'r') as file:
-        books = json.load(file)['books']
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM books')
+    books = [{'name': row[0], 'author': row[1], 'read': row[2]} for row in cursor.fetchall()]
+
+    connection.close()
+
     return books
 
 
 def read_book(name):
-    global books
-    for book in books:
-        if book['name'] == name:
-            book['read'] = True
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
+ 
+    cursor.execute('UPDATE books SET read=1 WHERE name=?', (name,))
 
-            with open(FILENAME, 'w') as file:
-                json.dump({'books': books}, file)
-
-            get_books()
-            break
-    else:
-        print(f'{name} is not in your list')
+    connection.commit()
+    connection.close()
 
 
 def delete_book(name):
-    for book in books:
-        if book['name'] == name:
-            books.remove(book)
+    connection = sqlite3.connect('data.db')
+    cursor = connection.cursor()
 
-            with open(FILENAME, 'w') as file:
-                json.dump({'books': books}, file)
+    cursor.execute('DELETE FROM books WHERE name=?', (name,))
 
-            get_books()
+    connection.commit()
+    connection.close()
 
-            break
-    else:
-        print(f'{name} is not in your list')
 
