@@ -11,22 +11,23 @@ Please enter one of the following:
 
 SIMPLE_USER_CHOICE = "\n(a)dd, (l)ist, (r)ead, (d)elete, (q)uit\n"
 
+
 def get_book_name():
-    return input('What is the name of the book: ')
+    return input("What is the name of the book: ")
 
 
 def get_book_info():
     name = get_book_name()
-    author = input('Who is the author: ')
-    read = input('Have you read this book (y/n): ')
+    author = input("Who is the author: ")
+    read = input("Have you read this book (y/n): ")
     # could check for valid input here?
-    if read == 'y':
+    if read == "y":
         read = 1
     else:
         read = 0
 
     print(read)
-    return { 'name': name, 'author': author, 'read': read }
+    return {"name": name, "author": author, "read": read}
 
 
 def add_book():
@@ -34,17 +35,18 @@ def add_book():
     database.add_book(book)
 
 
-def list_books(): 
+def list_books():
     books = database.get_books()
 
     for book in books:
         book_string = f'{book["name"]} was written by {book["author"]}. '
-        if book['read']:
-            book_string = book_string + 'I have finished it.'
+        if book["read"]:
+            book_string = book_string + "I have finished it."
         else:
-            book_string = book_string + 'I have not read it yet.'
-        
+            book_string = book_string + "I have not read it yet."
+
         print(book_string)
+
 
 def read_book():
     name = get_book_name()
@@ -57,24 +59,25 @@ def delete_book():
 
 
 USER_OPTIONS = {
-    'a': add_book,
-    'l': list_books,
-    'r': read_book,
-    'd': delete_book,
+    "a": add_book,
+    "l": list_books,
+    "r": read_book,
+    "d": delete_book,
 }
+
 
 def menu():
     database.create_book_table()
     user_input = input(USER_CHOICE)
-    while user_input != 'q':
+    while user_input != "q":
         if user_input in USER_OPTIONS:
             USER_OPTIONS[user_input]()
         else:
-            print('Unknown command, please try again')
-        
+            print("Unknown command, please try again")
+
         user_input = input(SIMPLE_USER_CHOICE)
 
-    print('Thanks, bye')
+    print("Thanks, bye")
+
 
 menu()
-
